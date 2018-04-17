@@ -69,7 +69,7 @@ func Get{{$FSMName}}StimulusString(stimulus {{$FSMName}}Stimulus) string {
 	}
 }
 
-type StateMachine struct {
+type {{$FSMName}}StateMachine struct {
 	CurrentState {{$FSMName}}State
 	Data         interface{}
 }
@@ -82,7 +82,7 @@ func (e *fsmError) Error() string {
 	return e.s
 }
 
-func (fsm *StateMachine) GetNextState(stimulus {{$FSMName}}Stimulus) ({{$FSMName}}State, error) {
+func (fsm *{{$FSMName}}StateMachine) GetNextState(stimulus {{$FSMName}}Stimulus) ({{$FSMName}}State, error) {
 	switch fsm.CurrentState {
 {{- range $state := .States}}
 		case {{.Id}}:
@@ -139,7 +139,7 @@ func GetOnLoopCallback(state {{$FSMName}}State) []func(interface{}) {
 	}
 }
 
-func (fsm *StateMachine) MoveNextState(stimulus {{$FSMName}}Stimulus) ({{$FSMName}}State, error) {
+func (fsm *{{$FSMName}}StateMachine) MoveNextState(stimulus {{$FSMName}}Stimulus) ({{$FSMName}}State, error) {
 	nextState, err := fsm.GetNextState(stimulus)
 	if err != nil {
 		return fsm.CurrentState, err
@@ -163,8 +163,8 @@ func (fsm *StateMachine) MoveNextState(stimulus {{$FSMName}}Stimulus) ({{$FSMNam
 	return nextState, nil
 }
 
-func New{{$FSMName}}StateMachine(data interface{}) *StateMachine {
-	return &StateMachine{ {{- .InitialState}}, data}
+func New{{$FSMName}}StateMachine(data interface{}) *{{$FSMName}}StateMachine {
+	return &{{$FSMName}}StateMachine{ {{- .InitialState}}, data}
 }
 
 `
