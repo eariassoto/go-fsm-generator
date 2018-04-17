@@ -56,6 +56,8 @@ func main() {
 	fsmPackage := flag.String("package", "main", "Package for the generated code")
 	outputDir := flag.String("output_dir", "", "Output directory to write the generated code")
 
+	flag.Parse()
+
 	for _, inputFile := range strings.Split(*inputFiles, ",") {
 
 		xmlFile, err := os.Open(path.Join(*inputDir, inputFile))
