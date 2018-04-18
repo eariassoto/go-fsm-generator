@@ -19,7 +19,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-package main
+package scxml_fsm_generator
 
 import (
 	"io"
@@ -170,10 +170,10 @@ func GetOnLoopCallback(state {{$FSMName}}State) []func(interface{}) {
 
 `
 
-// GenerateCodeForFSM takes a parsed SCXML file and generated the code
+// generateCodeForFSM takes a parsed SCXML file and generated the code
 // from a pre-defined template. All of the code for a FSM will be written
 // in a single Writer.
-func GenerateCodeForFSM(fsm *XMLStateMachine, outputFile io.Writer) error {
+func generateCodeForFSM(fsm *xmlStateMachine, outputFile io.Writer) error {
 	fsmTemplate := template.Must(template.New(fsm.Name).Parse(FSM_CODE_TEMPLATE_FILE))
 	return fsmTemplate.Execute(outputFile, fsm)
 }

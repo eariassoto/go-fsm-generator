@@ -19,7 +19,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-/* This program generates finite states machines from XML files. It parses
+/* This library generates finite states machines from XML files. It parses
    the description of a finite state machine and generates the proper Go
    code for the state machine.
 
@@ -36,57 +36,27 @@
    		MoveNextState(stimulus Stimulus) (State, error)
    the former to look ahead the next movement, and the latter to move the FSM.
 
-   You can install this program in your machine and use the go:generate command
-   in your program:
-   		//go:generate go-fsm-generator -input_files=my_fsm1.xml,my_fsm2.xml
+   TODO(eariassoto): Add an usage example
 */
-package main
+package scxml_fsm_generator
 
 import (
-	"flag"
+	"io"
 	"log"
-	"os"
-	"path"
-	"strings"
 )
 
-func main() {
-	inputDir := flag.String("input_dir", "scxml", "Directory where the XML files are located")
-	inputFiles := flag.String("input_files", "fsm.xml", "Comma-separated list of XML files")
-	fsmPackage := flag.String("package", "main", "Package for the generated code")
-	outputDir := flag.String("output_dir", "", "Output directory to write the generated code")
+// GenerateFSMCodeForSCXML expects scxmlFile to be a valid SCXML file. It will
+// parse the input file and write all the generated code in outputFile
+func GenerateFSMCodeForSCXML(scxmlFile io.Reader, outputFile io.Writer) {
+	fsm, err := parseXMLFile(scxmlFile)
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
 
-	flag.Parse()
-
-	for _, inputFile := range strings.Split(*inputFiles, ",") {
-
-		xmlFile, err := os.Open(path.Join(*inputDir, inputFile))
-		if err != nil {
-			log.Fatal(err)
-			return
-		}
-		defer xmlFile.Close()
-
-		fsm, err := ParseXMLFile(xmlFile)
-		if err != nil {
-			log.Fatal(err)
-			return
-		}
-
-		fsm.Package = *fsmPackage
-
-		outputFileName := fsm.Name + ".go"
-		outputFile, err := os.Create(path.Join(*outputDir, outputFileName))
-		if err != nil {
-			log.Fatal(err)
-			return
-		}
-		defer outputFile.Close()
-
-		err = GenerateCodeForFSM(fsm, outputFile)
-		if err != nil {
-			log.Fatal(err)
-			return
-		}
+	err = generateCodeForFSM(fsm, outputFile)
+	if err != nil {
+		log.Fatal(err)
+		return
 	}
 }
