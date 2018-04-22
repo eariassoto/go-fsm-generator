@@ -1,0 +1,47 @@
+<?xml version="1.0" ?>
+<scxml datamodel="ecmascript"
+	   name="Ghost"
+       package="main"
+       initial="WanderTheMaze"
+       version="1.0"
+       xmlns="http://www.w3.org/2005/07/scxml">
+
+    <!-- State Machine of the Ghost-->
+
+    <state id="WanderTheMaze">
+        <onEntry action="walkAround"/>
+
+        <!-- WanderTheMaze => ChasePacman -->
+        <transition event="SightPacman"  target="ChasePacman" />
+
+        <!-- WanderTheMaze => RunAwayFromPacman -->
+        <transition event="PacmanEatsPowerPill"  target="RunAwayFromPacman"/>
+    </state>
+
+    <state id="ChasePacman">
+        <onEntry action="chase"/>
+
+        <!-- ChasePacman => WanderTheMaze -->
+        <transition event="LoseSightOfPacman"  target="WanderTheMaze" />
+
+        <!-- ChasePacman => RunAwayFromPacman -->
+        <transition event="PacmanEatsPowerPill"  target="RunAwayFromPacman" />
+    </state>
+
+    <state id="RunAwayFromPacman">
+        <onEntry action="run"/>
+
+        <!-- RunAwayFromPacman => ReturnToBase -->
+        <transition event="GetEatenByPacman"  target="ReturnToBase" />
+
+        <!-- RunAwayFromPacman => WanderTheMaze -->
+        <transition event="PowerPillWearsOff"  target="WanderTheMaze" />
+    </state>
+
+    <state id="ReturnToBase">
+        <onEntry action="reset"/>
+
+        <!-- ReturnToBase => WanderTheMaze -->
+        <transition event="ReachTheBase"  target="WanderTheMaze"/>
+    </state>
+</scxml>

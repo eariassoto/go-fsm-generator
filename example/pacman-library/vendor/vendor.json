@@ -1,0 +1,25 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "zWLvlQelxMxzpwJ2abGOiLJHW8E=",
+			"path": "github.com/eariassoto/scxml_fsm_generator/internal/fsm_code_generator",
+			"revision": "71859245d929c172584281c1ac46e5c74cd13ffa",
+			"revisionTime": "2018-04-22T03:48:36Z"
+		},
+		{
+			"checksumSHA1": "VPBfTL/mYP/NZ7luDNsLI4cxsPs=",
+			"path": "github.com/eariassoto/scxml_fsm_generator/internal/scxml_to_fsm_parser",
+			"revision": "71859245d929c172584281c1ac46e5c74cd13ffa",
+			"revisionTime": "2018-04-22T03:48:36Z"
+		},
+		{
+			"checksumSHA1": "Hp25LLuFNxWX2SdDe0hFwvkOMI8=",
+			"path": "github.com/eariassoto/scxml_fsm_generator/pkg/scxml_fsm_generator",
+			"revision": "71859245d929c172584281c1ac46e5c74cd13ffa",
+			"revisionTime": "2018-04-22T03:48:36Z"
+		}
+	],
+	"rootPath": "github.com/eariassoto/scxml_fsm_generator/example/pacman-library"
+}
