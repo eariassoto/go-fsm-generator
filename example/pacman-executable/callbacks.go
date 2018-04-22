@@ -25,6 +25,15 @@ import (
 	"fmt"
 )
 
+// Conditionals
+
+func pacmanClose(data interface{}) bool {
+	fmt.Println("Conditional pacmanClose called")
+	return true
+}
+
+// State callbacks
+
 func chase(data interface{}) {
 	ghostStruct, ok := data.(*Ghost)
 	if ok {

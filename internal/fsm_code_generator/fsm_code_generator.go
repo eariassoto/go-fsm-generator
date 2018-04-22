@@ -120,7 +120,14 @@ func (fsm *{{$FSMName}}StateMachine) GetNextState(stimulus {{$FSMName}}Stimulus)
 			switch stimulus {
 {{- range $transition := $state.Transitions}}
 			case {{.Event}}:
+				{{- if ne .Cond ""}}
+				if {{.Cond}}(fsm.Data) == true {
+					return {{.Target}}, nil
+				}
+				return fsm.CurrentState, &fsmError{"Conditional callback returned false"}
+				{{- else}}
 				return {{.Target}}, nil
+				{{- end -}}
 {{- end}}
 			default:
 				return fsm.CurrentState, &fsmError{"Invalid stimulus"}

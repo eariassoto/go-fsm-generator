@@ -71,6 +71,7 @@ type ScxmlState struct {
 // TODO[eariassoto]: Add the conditional callback
 type ScxmlTransition struct {
 	Event  string `xml:"event,attr"`
+	Cond   string `xml:"cond,attr"`
 	Target string `xml:"target,attr"`
 }
 

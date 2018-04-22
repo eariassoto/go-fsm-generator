@@ -12,7 +12,7 @@
         <onEntry action="walkAround"/>
 
         <!-- WanderTheMaze => ChasePacman -->
-        <transition event="SightPacman"  target="ChasePacman" />
+        <transition event="SightPacman" cond="pacmanClose" target="ChasePacman" />
 
         <!-- WanderTheMaze => RunAwayFromPacman -->
         <transition event="PacmanEatsPowerPill"  target="RunAwayFromPacman"/>
