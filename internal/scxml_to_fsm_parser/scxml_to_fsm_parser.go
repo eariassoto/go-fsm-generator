@@ -19,7 +19,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-package scxml_fsm_generator
+package scxml_to_fsm_parser
 
 import (
 	"encoding/xml"
@@ -28,18 +28,18 @@ import (
 	"time"
 )
 
-// xmlStateMachine represents the entire FSM described on a SCXML document.
-type xmlStateMachine struct {
-	Name         string     `xml:"name,attr"`
-	Package      string     `xml:"package,attr"`
-	States       []xmlState `xml:"state"`
-	InitialState string     `xml:"initial,attr"`
+// ScxmlStateMachine represents the entire FSM described on a SCXML document.
+type ScxmlStateMachine struct {
 	Timestamp    time.Time
+	Name         string       `xml:"name,attr"`
+	Package      string       `xml:"package,attr"`
+	States       []ScxmlState `xml:"state"`
+	InitialState string       `xml:"initial,attr"`
 }
 
 // GetTransitions returns an unordered list of all the different transitions
 // appearing in the FSM. This list will be used to define the FSM's stimulus.
-func (fsm *xmlStateMachine) GetTransitions() []string {
+func (fsm *ScxmlStateMachine) GetTransitions() []string {
 	set := make(map[string]struct{})
 	for _, state := range fsm.States {
 		for _, transition := range state.Transitions {
@@ -55,35 +55,35 @@ func (fsm *xmlStateMachine) GetTransitions() []string {
 	return transitions
 }
 
-// xmlState represents a FSM state. It can have actions for when the FSM
+// ScxmlState represents a FSM state. It can have actions for when the FSM
 // exits/enters/re-enters that particular state.
-type xmlState struct {
-	Id            string          `xml:"id,attr"`
-	OnEntryAction xmlAction       `xml:"onEntry"`
-	OnLoopAction  xmlAction       `xml:"onLoop"`
-	OnExitAction  xmlAction       `xml:"onExit"`
-	Transitions   []xmlTransition `xml:"transition"`
+type ScxmlState struct {
+	Id            string            `xml:"id,attr"`
+	OnEntryAction ScxmlAction       `xml:"onEntry"`
+	OnLoopAction  ScxmlAction       `xml:"onLoop"`
+	OnExitAction  ScxmlAction       `xml:"onExit"`
+	Transitions   []ScxmlTransition `xml:"transition"`
 }
 
-// xmlTransition represents a transition in the FSM. A transitions defines
+// ScxmlTransition represents a transition in the FSM. A transitions defines
 // the name of the event and which state the FSM should move. A transition's
 // event's name will be formerly called a Stimulus.
 // TODO[eariassoto]: Add the conditional callback
-type xmlTransition struct {
+type ScxmlTransition struct {
 	Event  string `xml:"event,attr"`
 	Target string `xml:"target,attr"`
 }
 
-// xmlAction represents one or more state's callbacks. The user can register
+// ScxmlAction represents one or more state's callbacks. The user can register
 // one callback function or a comma-separated list of functions.
-type xmlAction struct {
+type ScxmlAction struct {
 	Name string `xml:"action,attr"`
 }
 
-// parseXMLFile takes a Reader interface and tries to parse a SCXML document
-// into a xmlStateMachine struct.
-func parseXMLFile(xmlFile io.Reader) (*xmlStateMachine, error) {
-	fsm := xmlStateMachine{Timestamp: time.Now().UTC()}
+// ParseScxmlFile takes a Reader interface and tries to parse a SCXML document
+// into a ScxmlStateMachine struct.
+func ParseScxmlFile(xmlFile io.Reader) (*ScxmlStateMachine, error) {
+	fsm := ScxmlStateMachine{Timestamp: time.Now().UTC()}
 
 	buffer, _ := ioutil.ReadAll(xmlFile)
 	xml.Unmarshal(buffer, &fsm)
