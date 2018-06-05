@@ -29,7 +29,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/eariassoto/scxml_fsm_generator/pkg/scxml_fsm_generator"
+	"github.com/eariassoto/scxml_fsm_generator/pkg/fsmgen"
 )
 
 func main() {
@@ -55,6 +55,6 @@ func main() {
 		}
 		defer outputFile.Close()
 
-		scxml_fsm_generator.GenerateFSMCodeForSCXML(scxmlFile, outputFile)
+		fsmgen.GenerateFSMCodeForSCXML(scxmlFile, outputFile)
 	}
 }

@@ -38,26 +38,26 @@
 
    TODO(eariassoto): Add an usage example
 */
-package scxml_fsm_generator
+package fsmgen
 
 import (
 	"io"
 	"log"
 
-	"github.com/eariassoto/scxml_fsm_generator/internal/fsm_code_generator"
-	"github.com/eariassoto/scxml_fsm_generator/internal/scxml_to_fsm_parser"
+	"github.com/eariassoto/scxml_fsm_generator/internal/codegen"
+	"github.com/eariassoto/scxml_fsm_generator/internal/tomlparser"
 )
 
 // GenerateFSMCodeForSCXML expects scxmlFile to be a valid SCXML file. It will
 // parse the input file and write all the generated code in outputFile
 func GenerateFSMCodeForSCXML(scxmlFile io.Reader, outputFile io.Writer) {
-	fsm, err := scxml_to_fsm_parser.ParseScxmlFile(scxmlFile)
+	fsm, err := tomlparser.ParseFsmFile(scxmlFile)
 	if err != nil {
 		log.Fatal(err)
 		return
 	}
 
-	err = fsm_code_generator.GenerateCodeForFSM(fsm, outputFile)
+	err = codegen.GenerateCodeForFSM(fsm, outputFile)
 	if err != nil {
 		log.Fatal(err)
 		return

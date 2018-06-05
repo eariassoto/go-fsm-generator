@@ -1,0 +1,58 @@
+name = "MyFsm"
+package = "main"
+description = "My new FSM"
+initialState = "WanderTheMaze"
+
+  [[states]]
+  name = "WanderTheMaze"
+  onEntry = "walkAround"
+
+  [[states]]
+  name = "ChasePacman"
+  onEntry = "chase"
+
+  [[states]]
+  name = "RunAwayFromPacman"
+  onEntry = "run"
+
+  [[states]]
+  name = "ReturnToBase"
+  onEntry = "reset"
+
+  [[transitions]]
+  event = "SightPacman"
+  stateFrom = "WanderTheMaze"
+  stateTo = "ChasePacman"
+  condition = "pacmanClose"
+
+  [[transitions]]
+  event = "PacmanEatsPowerPill"
+  stateFrom = "WanderTheMaze"
+  stateTo = "RunAwayFromPacman"
+  condition = "pacmanClose"
+
+  [[transitions]]
+  event = "LoseSightOfPacman"
+  stateFrom = "ChasePacman"
+  stateTo = "WanderTheMaze"
+
+  [[transitions]]
+  event = "PacmanEatsPowerPill"
+  stateFrom = "ChasePacman"
+  stateTo = "RunAwayFromPacman"
+
+  [[transitions]]
+  event = "GetEatenByPacman"
+  stateFrom = "RunAwayFromPacman"
+  stateTo = "ReturnToBase"
+  
+  [[transitions]]
+  event = "PowerPillWearsOff"
+  stateFrom = "RunAwayFromPacman"
+  stateTo = "WanderTheMaze"
+  condition = "pacmanClose"
+
+  [[transitions]]
+  event = "ReachTheBase"
+  stateFrom = "ReturnToBase"
+  stateTo = "WanderTheMaze"
